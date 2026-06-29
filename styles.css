@@ -1,0 +1,261 @@
+:root {
+    /* Paleta de colores Premium */
+    --primary-pink: #ff3366;
+    --secondary-pink: #ff99cc;
+    --chrome-pink: #e6005c;
+    --bg-dark: #12000a;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 153, 204, 0.3);
+    --text-glow: rgba(255, 51, 102, 0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: white;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden; /* Evita scroll durante la experiencia */
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Canvas para el efecto Satén/Partículas */
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Contenedores de pantallas */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 1.2s;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+/* Pantalla de Bienvenida */
+#welcome-screen {
+    transform: scale(0.9);
+}
+
+#welcome-screen.fade-out {
+    opacity: 0;
+    transform: scale(1.3); /* Efecto de atravesar el texto */
+    visibility: hidden;
+}
+
+.title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 10rem;
+    color: #fff;
+    font-weight: 400;
+    /* Efecto relieve y diamante */
+    text-shadow: 0 0 10px #fff, 
+                 0 0 20px var(--primary-pink), 
+                 0 0 40px var(--chrome-pink),
+                 2px 2px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    animation: heartbeat 3s infinite alternate;
+    user-select: none;
+}
+
+.title:hover {
+    text-shadow: 0 0 20px #fff, 
+                 0 0 40px var(--secondary-pink), 
+                 0 0 80px var(--primary-pink);
+    transform: scale(1.05);
+}
+
+.subtitle {
+    margin-top: 1rem;
+    font-size: 1rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    animation: fadeInOut 4s infinite;
+    font-weight: 300;
+}
+
+/* Animaciones Clave */
+@keyframes heartbeat {
+    0% { transform: scale(1); text-shadow: 0 0 20px var(--primary-pink), 0 0 40px var(--chrome-pink); }
+    100% { transform: scale(1.03); text-shadow: 0 0 30px var(--secondary-pink), 0 0 60px var(--primary-pink); }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+/* Galería 3D */
+#gallery-screen {
+    transform: translateY(50px);
+}
+#gallery-screen.active {
+    transform: translateY(0);
+}
+
+.scene {
+    width: 320px;
+    height: 450px;
+    perspective: 1200px; /* Profundidad de la vista 3D */
+}
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotateCarousel 24s infinite linear;
+}
+
+/* Pausar al pasar el ratón */
+.carousel:hover {
+    animation-play-state: paused;
+}
+
+.carousel__cell {
+    position: absolute;
+    width: 300px;
+    height: 430px;
+    left: 10px;
+    top: 10px;
+    border-radius: 20px;
+    transition: transform 1s, box-shadow 0.3s;
+}
+
+.card-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.card-content h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--secondary-pink);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    font-weight: 400;
+}
+
+/* Efecto Glassmorphism (Corazón de Cristal) */
+.glass-effect {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    /* Sombra exterior resplandeciente y sombra interior para volumen */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
+                inset 0 0 20px rgba(255, 153, 204, 0.2),
+                0 0 20px rgba(255, 51, 102, 0.2);
+}
+
+.glass-effect:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 
+                inset 0 0 30px rgba(255, 153, 204, 0.4),
+                0 0 30px rgba(255, 51, 102, 0.6);
+}
+
+/* Imágenes dentro de las cartas */
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    background-color: rgba(255,51,102,0.1); /* Fallback color if image is missing */
+    position: relative;
+}
+
+/* Fallback styling para imágenes no encontradas */
+.gallery-img::after {
+    content: "Imagen no disponible";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 51, 102, 0.1);
+    color: var(--secondary-pink);
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Posicionamiento de las caras del prisma 3D (4 caras = 90 grados de separación) */
+.carousel__cell:nth-child(1) { transform: rotateY(0deg) translateZ(400px); }
+.carousel__cell:nth-child(2) { transform: rotateY(90deg) translateZ(400px); }
+.carousel__cell:nth-child(3) { transform: rotateY(180deg) translateZ(400px); }
+.carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(400px); }
+
+@keyframes rotateCarousel {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+/* Botón de volver */
+.glass-button {
+    margin-top: 50px;
+    padding: 10px 30px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 1rem;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.glass-button:hover {
+    background: rgba(255, 51, 102, 0.3);
+    box-shadow: 0 0 15px var(--primary-pink);
+    transform: translateY(-2px);
+}
+
+/* Media Queries para Responsividad (Móviles) */
+@media (max-width: 768px) {
+    .title { font-size: 6rem; }
+    .scene { width: 260px; height: 380px; }
+    .carousel__cell { width: 240px; height: 360px; }
+    /* Ajuste de traslación Z para pantallas más pequeñas */
+    .carousel__cell:nth-child(1) { transform: rotateY(0deg) translateZ(240px); }
+    .carousel__cell:nth-child(2) { transform: rotateY(90deg) translateZ(240px); }
+    .carousel__cell:nth-child(3) { transform: rotateY(180deg) translateZ(240px); }
+    .carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(240px); }
+}
