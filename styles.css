@@ -1,130 +1,203 @@
+/* ══════════════════════════════════════════════
+   AMAYA — styles.css
+   Diseño premium, responsivo y fluido
+   ══════════════════════════════════════════════ */
+
+/* ── 1. VARIABLES GLOBALES ── */
 :root {
-    /* Paleta de colores Premium */
-    --primary-pink: #ff3366;
-    --secondary-pink: #ff99cc;
-    --chrome-pink: #e6005c;
-    --bg-dark: #12000a;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 153, 204, 0.3);
-    --text-glow: rgba(255, 51, 102, 0.8);
+    --pink-deep:    #12000a;
+    --pink-vivid:   #ff3366;
+    --pink-fuchsia: #e6005c;
+    --pink-soft:    #ff99cc;
+    --pink-chrome:  #ffb3d9;
+    --gold-rose:    #c9748f;
+
+    /* Glassmorphism */
+    --glass-bg:     rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 153, 204, 0.35);
+    --glass-shadow: rgba(230, 0, 92, 0.25);
+
+    /* Tipografía fluida — escala automáticamente entre móvil y escritorio */
+    --title-size:   clamp(4rem, 18vw, 12rem);
+    --subtitle-size: clamp(0.65rem, 2vw, 1rem);
+    --label-size:   clamp(1.4rem, 5vw, 2.2rem);
+
+    /* Dimensiones del carrusel — sobreescritas por JS según pantalla */
+    --card-width:   280px;
+    --card-height:  400px;
+    --card-radius:  390px; /* translateZ en JS */
 }
 
-* {
+/* ── 2. RESET Y BASE ── */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Elimina flash azul en móviles */
+}
+
+html {
+    /* Fix 100vh en iOS Safari (la barra de dirección resta espacio) */
+    height: -webkit-fill-available;
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: white;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    overflow: hidden; /* Evita scroll durante la experiencia */
-    width: 100vw;
+    background-color: var(--pink-deep);
+    color: #fff;
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    width: 100%;
     height: 100vh;
+    height: -webkit-fill-available; /* iOS fix */
+    overflow: hidden;
+    overscroll-behavior: none; /* Evita el bounce en iOS */
 }
 
-/* Canvas para el efecto Satén/Partículas */
+/* ── 3. CANVAS DE FONDO ── */
 #background-canvas {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0; /* shorthand para top/right/bottom/left: 0 */
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
+    pointer-events: none;
 }
 
-/* Contenedores de pantallas */
+/* ── 4. SISTEMA DE PANTALLAS ── */
 .screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right)
+             env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+    /* Estado oculto por defecto */
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                visibility 1.2s;
+    transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 1.1s;
 }
 
 .screen.active {
     opacity: 1;
     visibility: visible;
-    transform: scale(1);
+    transform: none !important;
+    transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 0s;
 }
 
-/* Pantalla de Bienvenida */
+/* ── 5. PANTALLA DE BIENVENIDA ── */
 #welcome-screen {
-    transform: scale(0.9);
+    transform: scale(0.95);
 }
 
 #welcome-screen.fade-out {
     opacity: 0;
-    transform: scale(1.3); /* Efecto de atravesar el texto */
-    visibility: hidden;
+    transform: scale(1.25);
+    pointer-events: none;
 }
 
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.5rem, 2vh, 1.2rem);
+    padding: 0 1rem;
+    text-align: center;
+}
+
+/* Ornamento decorativo */
+.ornament {
+    font-size: clamp(0.6rem, 2vw, 0.85rem);
+    letter-spacing: clamp(4px, 2vw, 12px);
+    color: var(--pink-soft);
+    opacity: 0.7;
+    animation: fadeInOut 5s ease-in-out infinite;
+}
+
+/* Título principal AMAYA */
 .title {
     font-family: 'Great Vibes', cursive;
-    font-size: 10rem;
-    color: #fff;
+    font-size: var(--title-size);
     font-weight: 400;
-    /* Efecto relieve y diamante */
-    text-shadow: 0 0 10px #fff, 
-                 0 0 20px var(--primary-pink), 
-                 0 0 40px var(--chrome-pink),
-                 2px 2px 5px rgba(0,0,0,0.5);
+    line-height: 1;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.4s ease;
-    animation: heartbeat 3s infinite alternate;
     user-select: none;
+    outline: none;
+
+    /* Resplandor multicapa que imita diamantes */
+    text-shadow:
+        0 0  8px rgba(255,255,255,0.9),
+        0 0 20px var(--pink-vivid),
+        0 0 45px var(--pink-fuchsia),
+        0 0 80px rgba(230, 0, 92, 0.4),
+        2px 3px 6px rgba(0,0,0,0.6);
+
+    /* Animación de pulso suave */
+    animation: heartbeat 3.5s ease-in-out infinite alternate;
+    transition: text-shadow 0.3s ease, transform 0.3s ease;
+
+    /* Área de toque mínima recomendada para accesibilidad */
+    padding: 0.2em 0.3em;
 }
 
-.title:hover {
-    text-shadow: 0 0 20px #fff, 
-                 0 0 40px var(--secondary-pink), 
-                 0 0 80px var(--primary-pink);
-    transform: scale(1.05);
+.title:hover,
+.title:focus {
+    text-shadow:
+        0 0 15px rgba(255,255,255,1),
+        0 0 35px var(--pink-soft),
+        0 0 70px var(--pink-vivid),
+        0 0 120px var(--pink-fuchsia);
+    transform: scale(1.04);
 }
 
+/* Subtítulo */
 .subtitle {
-    margin-top: 1rem;
-    font-size: 1rem;
-    letter-spacing: 5px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: var(--subtitle-size);
+    letter-spacing: clamp(3px, 3vw, 8px);
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    animation: fadeInOut 4s infinite;
+    color: rgba(255, 255, 255, 0.55);
     font-weight: 300;
+    animation: fadeInOut 4s ease-in-out infinite;
 }
 
-/* Animaciones Clave */
-@keyframes heartbeat {
-    0% { transform: scale(1); text-shadow: 0 0 20px var(--primary-pink), 0 0 40px var(--chrome-pink); }
-    100% { transform: scale(1.03); text-shadow: 0 0 30px var(--secondary-pink), 0 0 60px var(--primary-pink); }
-}
-
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
-}
-
-/* Galería 3D */
+/* ── 6. PANTALLA DE GALERÍA ── */
 #gallery-screen {
-    transform: translateY(50px);
-}
-#gallery-screen.active {
-    transform: translateY(0);
+    transform: translateY(40px);
+    gap: clamp(0.6rem, 2vh, 1.2rem);
+    padding-top: clamp(0.5rem, 3vh, 2rem);
+    padding-bottom: clamp(0.5rem, 3vh, 2rem);
 }
 
+/* Título secundario de la galería */
+.gallery-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: 400;
+    color: var(--pink-chrome);
+    text-shadow:
+        0 0 10px var(--pink-vivid),
+        0 0 25px rgba(230, 0, 92, 0.5);
+    opacity: 0.85;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+}
+
+/* ── 7. CARRUSEL 3D ── */
 .scene {
-    width: 320px;
-    height: 450px;
-    perspective: 1200px; /* Profundidad de la vista 3D */
+    /* Dimensiones base — JS las reescribe según pantalla */
+    width: var(--card-width);
+    height: var(--card-height);
+    perspective: 1500px;
+    flex-shrink: 0;
+    position: relative;
 }
 
 .carousel {
@@ -132,130 +205,201 @@ body {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    animation: rotateCarousel 24s infinite linear;
+    /* La animación de giro se controla desde JS para que el radio sea dinámico */
+    animation: rotateCarousel 28s infinite linear;
+    will-change: transform; /* Optimización GPU */
 }
 
-/* Pausar al pasar el ratón */
-.carousel:hover {
+/* Pausar al interactuar */
+.carousel:hover,
+.carousel.paused {
     animation-play-state: paused;
 }
 
+/* Cada cara del carrusel */
 .carousel__cell {
     position: absolute;
-    width: 300px;
-    height: 430px;
-    left: 10px;
-    top: 10px;
-    border-radius: 20px;
-    transition: transform 1s, box-shadow 0.3s;
+    width: var(--card-width);
+    height: var(--card-height);
+    border-radius: 22px;
+    /* Las posiciones rotateY + translateZ se asignan desde JS */
+    backface-visibility: hidden; /* Evita ver el reverso de las caras */
 }
 
-.card-content {
+/* ── 8. TARJETAS DE CRISTAL (Glassmorphism) ── */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 0 30px rgba(255, 153, 204, 0.12),
+        0 0 25px var(--glass-shadow);
+    overflow: hidden;
+    transition: box-shadow 0.4s ease;
+}
+
+.glass-card:hover {
+    box-shadow:
+        0 25px 50px rgba(0,0,0,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        inset 0 0 40px rgba(255, 153, 204, 0.25),
+        0 0 40px rgba(230, 0, 92, 0.5);
+}
+
+/* Interior de la tarjeta */
+.card-inner {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 15px;
-    border-radius: 18px;
+    position: relative;
+    border-radius: 22px;
     overflow: hidden;
 }
 
-.card-content h2 {
+/* Etiqueta de la tarjeta */
+.card-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: clamp(0.6rem, 2vw, 1rem);
     font-family: 'Great Vibes', cursive;
-    font-size: 2.5rem;
+    font-size: var(--label-size);
+    color: #fff;
     text-align: center;
-    margin-bottom: 15px;
-    color: var(--secondary-pink);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    font-weight: 400;
+    text-shadow:
+        0 1px 4px rgba(0,0,0,0.8),
+        0 0 15px var(--pink-vivid);
+    /* Degradado al fondo para legibilidad */
+    background: linear-gradient(
+        to top,
+        rgba(12, 0, 8, 0.85) 0%,
+        rgba(12, 0, 8, 0.3) 60%,
+        transparent 100%
+    );
 }
 
-/* Efecto Glassmorphism (Corazón de Cristal) */
-.glass-effect {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    /* Sombra exterior resplandeciente y sombra interior para volumen */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
-                inset 0 0 20px rgba(255, 153, 204, 0.2),
-                0 0 20px rgba(255, 51, 102, 0.2);
-}
-
-.glass-effect:hover {
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 
-                inset 0 0 30px rgba(255, 153, 204, 0.4),
-                0 0 30px rgba(255, 51, 102, 0.6);
-}
-
-/* Imágenes dentro de las cartas */
+/* Imagen de la tarjeta */
 .gallery-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    background-color: rgba(255,51,102,0.1); /* Fallback color if image is missing */
-    position: relative;
+    object-position: center top; /* Para retratos, prioriza la parte superior */
+    display: block;
+    border-radius: 22px;
 }
 
-/* Fallback styling para imágenes no encontradas */
-.gallery-img::after {
-    content: "Imagen no disponible";
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+/* ── 9. INDICADORES (DOTS) ── */
+.dots {
     display: flex;
-    justify-content: center;
+    gap: 8px;
     align-items: center;
-    background: rgba(255, 51, 102, 0.1);
-    color: var(--secondary-pink);
-    font-family: Arial, sans-serif;
-    font-size: 0.9rem;
-    text-align: center;
+    flex-shrink: 0;
 }
 
-/* Posicionamiento de las caras del prisma 3D (4 caras = 90 grados de separación) */
-.carousel__cell:nth-child(1) { transform: rotateY(0deg) translateZ(400px); }
-.carousel__cell:nth-child(2) { transform: rotateY(90deg) translateZ(400px); }
-.carousel__cell:nth-child(3) { transform: rotateY(180deg) translateZ(400px); }
-.carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(400px); }
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 153, 204, 0.35);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dot.active {
+    background: var(--pink-vivid);
+    transform: scale(1.4);
+    box-shadow: 0 0 8px var(--pink-vivid);
+}
+
+/* ── 10. BOTÓN VOLVER ── */
+.glass-button {
+    flex-shrink: 0;
+    padding: clamp(8px, 2vw, 12px) clamp(20px, 5vw, 36px);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: all 0.35s ease;
+    /* Área mínima de toque para móviles */
+    min-height: 44px;
+    min-width: 44px;
+}
+
+.glass-button:hover,
+.glass-button:focus {
+    background: rgba(230, 0, 92, 0.25);
+    border-color: var(--pink-vivid);
+    box-shadow: 0 0 20px rgba(230, 0, 92, 0.4);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+/* ── 11. ANIMACIONES ── */
+@keyframes heartbeat {
+    0%   { transform: scale(1);    filter: brightness(1); }
+    50%  { transform: scale(1.02); filter: brightness(1.15); }
+    100% { transform: scale(1.04); filter: brightness(1.3); }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.25; }
+    50%       { opacity: 0.75; }
+}
 
 @keyframes rotateCarousel {
     from { transform: rotateY(0deg); }
-    to { transform: rotateY(360deg); }
+    to   { transform: rotateY(360deg); }
 }
 
-/* Botón de volver */
-.glass-button {
-    margin-top: 50px;
-    padding: 10px 30px;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 1rem;
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    backdrop-filter: blur(5px);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+/* ── 12. MEDIA QUERIES RESPONSIVAS ── */
+
+/* Pantallas muy pequeñas (< 380px — Galaxy Fold, iPhone SE) */
+@media (max-width: 379px) {
+    #gallery-screen { gap: 0.4rem; }
+    .gallery-title  { font-size: 1.8rem; }
 }
 
-.glass-button:hover {
-    background: rgba(255, 51, 102, 0.3);
-    box-shadow: 0 0 15px var(--primary-pink);
-    transform: translateY(-2px);
+/* Pantallas medianas — Tablet portrait (768px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .gallery-title { font-size: 3rem; }
 }
 
-/* Media Queries para Responsividad (Móviles) */
-@media (max-width: 768px) {
-    .title { font-size: 6rem; }
-    .scene { width: 260px; height: 380px; }
-    .carousel__cell { width: 240px; height: 360px; }
-    /* Ajuste de traslación Z para pantallas más pequeñas */
-    .carousel__cell:nth-child(1) { transform: rotateY(0deg) translateZ(240px); }
-    .carousel__cell:nth-child(2) { transform: rotateY(90deg) translateZ(240px); }
-    .carousel__cell:nth-child(3) { transform: rotateY(180deg) translateZ(240px); }
-    .carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(240px); }
+/* Landscape en móvil — altura limitada */
+@media (max-height: 600px) and (orientation: landscape) {
+    .welcome-content { gap: 0.3rem; }
+    .ornament { display: none; }
+    #gallery-screen { gap: 0.3rem; }
+    .gallery-title { display: none; }
+    .dots { display: none; }
+}
+
+/* Escritorio grande (> 1400px) */
+@media (min-width: 1400px) {
+    :root {
+        --card-width: 340px;
+        --card-height: 480px;
+    }
+}
+
+/* Reducción de movimiento (accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+    .title { animation: none; }
+    .subtitle { animation: none; opacity: 0.6; }
+    .ornament { animation: none; opacity: 0.5; }
+    .carousel { animation-duration: 60s; }
 }
