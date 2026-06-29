@@ -2,62 +2,119 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMAYA - Experiencia Interactiva</title>
-    <!-- SEO Best Practices -->
-    <meta name="description" content="Experiencia visual e interactiva AMAYA. Un viaje a través de satén rosa, cristal y diseño 3D.">
+    <!-- viewport con viewport-fit=cover para notch de iPhone -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AMAYA ✦ Experiencia Interactiva</title>
+    <meta name="description" content="Experiencia visual e interactiva AMAYA — satén, cristal y magia visual en 3D.">
+    <meta name="theme-color" content="#12000a">
+
+    <!-- Open Graph para compartir en redes sociales -->
+    <meta property="og:title" content="AMAYA ✦ Experiencia Interactiva">
+    <meta property="og:description" content="Una experiencia visual inmersiva: satén rosa, cristal y magia 3D.">
+    <meta property="og:type" content="website">
+
     <link rel="stylesheet" href="styles.css">
-    <!-- Fuente caligráfica elegante -->
+
+    <!-- Fuentes caligráficas elegantes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Fondo dinámico de partículas y gradiente de satén -->
-    <canvas id="background-canvas"></canvas>
 
-    <!-- Pantalla 1: Bienvenida -->
-    <main id="welcome-screen" class="screen active">
-        <h1 id="amaya-title" class="title">Amaya</h1>
-        <p class="subtitle">Descubre la magia</p>
+    <!-- Canvas del fondo animado (satén + partículas) -->
+    <canvas id="background-canvas" aria-hidden="true"></canvas>
+
+    <!-- ══════════════════════════════════════
+         PANTALLA 1: BIENVENIDA
+    ══════════════════════════════════════ -->
+    <main id="welcome-screen" class="screen active" role="main">
+        <div class="welcome-content">
+            <!-- Ornamento decorativo superior -->
+            <div class="ornament" aria-hidden="true">✦ ✦ ✦</div>
+
+            <h1 id="amaya-title" class="title" tabindex="0" role="button"
+                aria-label="Clic para explorar la galería de Amaya">
+                Amaya
+            </h1>
+
+            <p class="subtitle">✦ Toca para explorar ✦</p>
+        </div>
     </main>
 
-    <!-- Pantalla 2: Galería 3D Interactiva -->
-    <section id="gallery-screen" class="screen">
-        <div class="scene">
-            <div class="carousel">
-                <!-- Carta 1: Caligrafía -->
-                <div class="carousel__cell glass-effect">
-                    <div class="card-content">
-                        <h2>Elegancia</h2>
-                        <img src="assets/amaya-calligraphy.jpg" alt="Amaya Caligrafía" class="gallery-img">
+    <!-- ══════════════════════════════════════
+         PANTALLA 2: GALERÍA 3D
+    ══════════════════════════════════════ -->
+    <section id="gallery-screen" class="screen" aria-label="Galería interactiva 3D">
+
+        <!-- Título de la galería -->
+        <h2 class="gallery-title">Amaya</h2>
+
+        <!-- Escena 3D -->
+        <div class="scene" id="carousel-scene">
+            <div class="carousel" id="carousel" aria-live="polite">
+
+                <!-- Cara 1: Elegancia -->
+                <div class="carousel__cell glass-card" data-label="Elegancia">
+                    <div class="card-inner">
+                        <span class="card-label">Elegancia</span>
+                        <img src="assets/amaya-calligraphy.jpg"
+                             alt="Amaya – Elegancia"
+                             class="gallery-img"
+                             loading="lazy">
                     </div>
                 </div>
-                <!-- Carta 2: Satén Rosa -->
-                <div class="carousel__cell glass-effect">
-                    <div class="card-content">
-                        <h2>Fluidez</h2>
-                        <img src="assets/satin-texture.jpg" alt="Textura de Satén Rosa" class="gallery-img">
+
+                <!-- Cara 2: Fluidez -->
+                <div class="carousel__cell glass-card" data-label="Fluidez">
+                    <div class="card-inner">
+                        <span class="card-label">Fluidez</span>
+                        <img src="assets/satin-texture.jpg"
+                             alt="Amaya – Fluidez del satén"
+                             class="gallery-img"
+                             loading="lazy">
                     </div>
                 </div>
-                <!-- Carta 3: Corazón de Cristal -->
-                <div class="carousel__cell glass-effect">
-                    <div class="card-content">
-                        <h2>Transparencia</h2>
-                        <img src="assets/glass-heart.jpg" alt="Corazón de Cristal Anatómico" class="gallery-img">
+
+                <!-- Cara 3: Transparencia -->
+                <div class="carousel__cell glass-card" data-label="Transparencia">
+                    <div class="card-inner">
+                        <span class="card-label">Transparencia</span>
+                        <img src="assets/glass-heart.jpg"
+                             alt="Amaya – Transparencia"
+                             class="gallery-img"
+                             loading="lazy">
                     </div>
                 </div>
-                <!-- Carta 4: Carta de Cupido -->
-                <div class="carousel__cell glass-effect">
-                    <div class="card-content">
-                        <h2>Preciosidad</h2>
-                        <img src="assets/cupid-card.jpg" alt="Carta de Cupido con Diamantes" class="gallery-img">
+
+                <!-- Cara 4: Preciosidad -->
+                <div class="carousel__cell glass-card" data-label="Preciosidad">
+                    <div class="card-inner">
+                        <span class="card-label">Preciosidad</span>
+                        <img src="assets/cupid-card.jpg"
+                             alt="Amaya – Carta de Cupido"
+                             class="gallery-img"
+                             loading="lazy">
                     </div>
                 </div>
-            </div>
+
+            </div><!-- /.carousel -->
+        </div><!-- /.scene -->
+
+        <!-- Indicadores de posición (dots) -->
+        <div class="dots" id="dots" aria-label="Indicador de posición">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            <span class="dot" data-index="3"></span>
         </div>
-        <button id="back-button" class="glass-button">Volver</button>
-    </section>
+
+        <!-- Botón volver -->
+        <button id="back-button" class="glass-button" aria-label="Volver al inicio">
+            ← Volver
+        </button>
+
+    </section><!-- /#gallery-screen -->
 
     <script src="script.js"></script>
 </body>
