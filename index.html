@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMAYA - Experiencia Interactiva</title>
+    <!-- SEO Best Practices -->
+    <meta name="description" content="Experiencia visual e interactiva AMAYA. Un viaje a través de satén rosa, cristal y diseño 3D.">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Fuente caligráfica elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Fondo dinámico de partículas y gradiente de satén -->
+    <canvas id="background-canvas"></canvas>
+
+    <!-- Pantalla 1: Bienvenida -->
+    <main id="welcome-screen" class="screen active">
+        <h1 id="amaya-title" class="title">Amaya</h1>
+        <p class="subtitle">Descubre la magia</p>
+    </main>
+
+    <!-- Pantalla 2: Galería 3D Interactiva -->
+    <section id="gallery-screen" class="screen">
+        <div class="scene">
+            <div class="carousel">
+                <!-- Carta 1: Caligrafía -->
+                <div class="carousel__cell glass-effect">
+                    <div class="card-content">
+                        <h2>Elegancia</h2>
+                        <img src="assets/amaya-calligraphy.jpg" alt="Amaya Caligrafía" class="gallery-img">
+                    </div>
+                </div>
+                <!-- Carta 2: Satén Rosa -->
+                <div class="carousel__cell glass-effect">
+                    <div class="card-content">
+                        <h2>Fluidez</h2>
+                        <img src="assets/satin-texture.jpg" alt="Textura de Satén Rosa" class="gallery-img">
+                    </div>
+                </div>
+                <!-- Carta 3: Corazón de Cristal -->
+                <div class="carousel__cell glass-effect">
+                    <div class="card-content">
+                        <h2>Transparencia</h2>
+                        <img src="assets/glass-heart.jpg" alt="Corazón de Cristal Anatómico" class="gallery-img">
+                    </div>
+                </div>
+                <!-- Carta 4: Carta de Cupido -->
+                <div class="carousel__cell glass-effect">
+                    <div class="card-content">
+                        <h2>Preciosidad</h2>
+                        <img src="assets/cupid-card.jpg" alt="Carta de Cupido con Diamantes" class="gallery-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="back-button" class="glass-button">Volver</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
